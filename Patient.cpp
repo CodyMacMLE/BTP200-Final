@@ -1,6 +1,5 @@
-#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
-Final Project Milestone MS3
+Final Project Milestone MS4
 Module: Patient
 Filename: Patient.cpp
 Version 1.0
@@ -8,25 +7,28 @@ Author   Cody MacDonald
 Revision History
 -----------------------------------------------------------
 Date      Reason
-2024/03/20  Preliminary release
+2024/03/27  Preliminary release
+2024/03/27  Added clear buffer from github tutorial to Patient::read()
 -----------------------------------------------------------
-I have done all the coding by myself and only copied the code
-that my professor provided to complete my workshops and assignments.
+1.	Clearing buffer using max stream buffer size template + limits module (cin.clear & .ignore)
+	https://gist.github.com/leimao/418395bf920eb70b2b11fe89d7c1f738
 ----------------------------------------------------------- */
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <limits>
+#include <cstring>
 #include <iomanip>
 #include "Patient.h"
 namespace seneca {
 
-	Patient::Patient(int ticketNo)
+	Patient::Patient(int ticketNo) : m_ticket(ticketNo)
 	{
 		m_patientName = nullptr;
 		m_ohipNo = 0;
-		m_ticket.setNumber(ticketNo); // Is not setting ticketNo
 	}
 
-	Patient::Patient(const Patient& that) {
-		delete[] m_patientName;
+	Patient::Patient(const Patient& that) : m_ticket(that.number()){
+		m_patientName = nullptr;
 		*this = that;
 	}
 
@@ -64,7 +66,7 @@ namespace seneca {
 	}
 
 	bool Patient::operator==(const Patient& that) const {
-		return this->m_ohipNo == that.m_ohipNo;
+		return (this->type() == that.type()) ? true : false;
 	}
 
 	void Patient::setArrivalTime() {
@@ -79,7 +81,7 @@ namespace seneca {
 		return this->m_ticket.number();
 	}
 
-	Patient::operator bool(){
+	Patient::operator bool() const{
 		return (m_ohipNo == 0) ? false : true;
 	}
 
@@ -87,54 +89,56 @@ namespace seneca {
 		return m_patientName;
 	}
 
-	std::ostream& Patient::write(std::ostream& out) const {
-		if (&out == &std::clog)
+	std::ostream& Patient::write(std::ostream& ostr) const {
+		if (&ostr == &std::clog)
 		{
-			if ((bool)this)
-			{
-				out << "Invalid Patient Record\n";
-			}
-			else
+			if ((bool)*this)
 			{
 				std::ios init(NULL);
-				init.copyfmt(out); // Copies default 'out' formatting
+				init.copyfmt(ostr); // Copies default 'out' formatting
 
-				out.width(53);
-				out.setf('.');
-				out << std::left << m_patientName << m_ohipNo;
-				out.width(5);
-				out.setf(' ');
-				out << std::right << this->number() << " " << this->time();
+				ostr.width(53);
+				ostr.fill('.');
+				ostr << std::left << m_patientName << m_ohipNo;
+				ostr.width(5);
+				ostr.fill(' ');
+				ostr << std::right << this->number() << " " << this->time();
 
-				out.copyfmt(init); // Restores out formatting to copied format 'init'
-			}
-		}
-		else if (&out == &std::cout)
-		{
-			if ((bool)this)
-			{
-				out << "Invalid Patient Record\n";
+				ostr.copyfmt(init); // Restores out formatting to copied format 'init'
 			}
 			else
 			{
-				out << m_ticket << "\n" << m_patientName << ", OHIP: " << m_ohipNo << "\n"; 
+				ostr << "Invalid Patient Record\n";
+			}
+		}
+		else if (&ostr == &std::cout)
+		{
+			if ((bool)*this)
+			{
+				ostr << m_ticket << "\n" << m_patientName << ", OHIP: " << m_ohipNo << "\n";
+			}
+			else
+			{
+				ostr << "Invalid Patient Record\n";
 			}
 		}
 		else // csv format
 		{
-			out << this->type() << "," << m_patientName << "," << m_ohipNo << ",";
-			m_ticket.write(out);
+			ostr << this->type() << "," << m_patientName << "," << m_ohipNo << ",";
+			m_ticket.write(ostr);
 		}
-		return out;
+		return ostr;
 	}
 
-	std::istream& Patient::read(std::istream& in) {
-		if (&in == &std::cin)
+	std::istream& Patient::read(std::istream& istr) {
+		if (&istr == &std::cin)
 		{
 			// Get Name
 			std::cout << "Name: ";
 			char name[50 + 1];
-			in.get(name, 50);
+			istr.get(name, 51);
+			istr.clear();
+			istr.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			delete[] m_patientName;
 			m_patientName = new char[strlen(name) + 1];
 			strcpy(m_patientName, name);
@@ -146,8 +150,9 @@ namespace seneca {
 			bool hasChar = false;
 			bool exitFlag = false;
 			do {
-				in.ignore(); // clear buffer
-				in.get(ohip, 15); 
+				istr.get(ohip, 16);
+				istr.clear();
+				istr.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				
 
 				for (int i = 0; ohip[i] != '\0'; ++i)
@@ -190,20 +195,18 @@ namespace seneca {
 		{
 			// Name
 			char name[50 + 1];
-			in.get(name, 50);
+			istr.get(name, 51, ',');
 			delete[] m_patientName;
 			m_patientName = new char[strlen(name) + 1];
 			strcpy(m_patientName, name);
 
 			// OHIP
-			in.ignore(strlen(name) + 1);
-			char ohip[9 + 1];
-			in.get(ohip, 9);
-			m_ohipNo = std::atoi(ohip);
-
+			istr.ignore(10000000, ',');
+			istr >> m_ohipNo;
+			istr.ignore(10000000, ',');
 			// Ticket
-			m_ticket.read(in);
+			m_ticket.read(istr);
 		}
-		return in;
+		return istr;
 	}
 }

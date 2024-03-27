@@ -1,19 +1,19 @@
+#ifndef SENECA_PATIENT_H
+#define SENECA_PATIENT_H
 /* Citation and Sources...
-Final Project Milestone MS3
+Final Project Milestone MS4
 Module: Patient
-Filename: Patient.h
+Filename: Patient.cpp
 Version 1.0
 Author   Cody MacDonald
 Revision History
 -----------------------------------------------------------
 Date      Reason
-2024/03/20  Preliminary release
+2024/03/27  Preliminary release
 -----------------------------------------------------------
-I have done all the coding by myself and only copied the code
-that my professor provided to complete my workshops and assignments.
+1.	Clearing buffer using max stream buffer size template + limits module (cin.clear & .ignore)
+	https://gist.github.com/leimao/418395bf920eb70b2b11fe89d7c1f738
 ----------------------------------------------------------- */
-#ifndef SENECA_PATIENT_H
-#define SENECA_PATIENT_H
 #include "IOAble.h"
 #include "Ticket.h"
 namespace seneca {
@@ -100,7 +100,7 @@ namespace seneca {
 		/// Checks if patient is in a valid state
 		/// </summary>
 		/// <returns>true if valid, false otherwise</returns>
-		operator bool();
+		operator bool() const;
 
 		/// <summary>
 		/// returns the address of the patient name
@@ -112,14 +112,14 @@ namespace seneca {
 		/// </summary>
 		/// <param name="out">ostream to write to</param>
 		/// <returns></returns>
-		std::ostream& write(std::ostream& out) const;
+		std::ostream& write(std::ostream& ostr) const;
 
 		/// <summary>
 		/// Reads info inputted by user into patient object
 		/// </summary>
 		/// <param name="in">input stream</param>
 		/// <returns></returns>
-		std::istream& read(std::istream& in);
+		std::istream& read(std::istream& istr);
 	};
 }
 #endif // !SENECA_PATIENT_H

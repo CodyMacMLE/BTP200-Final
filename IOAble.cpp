@@ -1,6 +1,5 @@
-#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
-Final Project Milestone MS2
+Final Project Milestone MS4
 Module: IOAble
 Filename: IOAble.cpp
 Version 1.0
@@ -13,6 +12,7 @@ Date      Reason
 I have done all the coding by myself and only copied the code
 that my professor provided to complete my workshops and assignments.
 ----------------------------------------------------------- */
+#define _CRT_SECURE_NO_WARNINGS
 #include "IOAble.h"
 namespace seneca {
 	IOAble::~IOAble(){}

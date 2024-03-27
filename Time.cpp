@@ -1,6 +1,5 @@
-#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
-Final Project Milestone MS1
+Final Project Milestone MS4
 Module: Time
 Filename: Time.cpp
 Version 1.0
@@ -13,6 +12,7 @@ Date      Reason
 I have done all the coding by myself and only copied the code
 that my professor provided to complete my workshops and assignments.
 ----------------------------------------------------------- */
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <iomanip>
 #include "Time.h"
@@ -25,7 +25,7 @@ namespace seneca
 		if (min >= 0)
 			this->m_minutes = min;
 		else
-			this->m_minutes = 0;
+			this->m_minutes = 0u;
 	}
 
 	Time& Time::reset()

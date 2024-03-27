@@ -1,6 +1,5 @@
-#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
-Final Project Milestone MS3
+Final Project Milestone MS4
 Module: Ticket
 Filename: Ticket.cpp
 Version 1.0
@@ -8,27 +7,22 @@ Author   Cody MacDonald
 Revision History
 -----------------------------------------------------------
 Date      Reason
-2024/03/20  Preliminary release
+2024/03/27  Preliminary release
 -----------------------------------------------------------
 I have done all the coding by myself and only copied the code
 that my professor provided to complete my workshops and assignments.
 ----------------------------------------------------------- */
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cstring>
 #include "Ticket.h"
 #include "Time.h"
 
 namespace seneca {
-    Ticket::Ticket()
-    {
-        m_time.reset();
-        m_number = 0;
-    }
 
     Ticket::Ticket(int number)
     {
-        m_time.reset();
-        if (m_number > 0)
+        if (number > 0)
             m_number = number;
         else
             m_number = 0;
@@ -42,12 +36,6 @@ namespace seneca {
     int Ticket::number() const
     {
         return m_number;
-    }
-
-    void Ticket::setNumber(int number)
-    {
-        if (m_number > 0)
-            m_number = number;
     }
 
     void Ticket::resetTime()
@@ -73,7 +61,7 @@ namespace seneca {
         char number[3 + 1];
         istr.get(number, 3, ',');
         m_number = std::atoi(number);
-
+        istr.ignore(10000000, ',');
         this->m_time.read(istr);
         return istr;
     }

@@ -1,5 +1,5 @@
 /* Citation and Sources...
-Final Project Milestone MS3
+Final Project Milestone MS4
 Module: Ticket
 Filename: Ticket.h
 Version 1.0
@@ -7,7 +7,7 @@ Author   Cody MacDonald
 Revision History
 -----------------------------------------------------------
 Date      Reason
-2024/03/20  Preliminary release
+2024/03/27  Preliminary release
 -----------------------------------------------------------
 I have done all the coding by myself and only copied the code
 that my professor provided to complete my workshops and assignments.
@@ -29,7 +29,6 @@ namespace seneca {
       /// </summary>
       int m_number;
    public:
-      Ticket();
       /// <summary>
       /// Constructs a Ticket by setting the m_number member variable
       /// </summary>
@@ -47,12 +46,6 @@ namespace seneca {
       /// </summary>
       /// <returns></returns>
       int number() const;
-
-      /// <summary>
-      /// Sets the number of the ticket
-      /// </summary>
-      /// <param name="number"></param>
-      void setNumber(int number);
 
       /// <summary>
       /// Sets the Ticket time to the current time.

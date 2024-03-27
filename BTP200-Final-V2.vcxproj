@@ -120,20 +120,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="IOAble.cpp" />
+    <ClCompile Include="main-M4.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="MS3main.cpp" />
     <ClCompile Include="Patient.cpp" />
+    <ClCompile Include="TestPatient.cpp" />
     <ClCompile Include="Ticket.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TriagePatient.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOAble.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Patient.h" />
+    <ClInclude Include="TestPatient.h" />
     <ClInclude Include="Ticket.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TriagePatient.h" />
     <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ms3.csv" />
+    <None Include="ms3out.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="correct_output MS4.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
