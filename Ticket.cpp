@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
 Final Project Milestone MS3
 Module: Ticket
@@ -18,6 +19,12 @@ that my professor provided to complete my workshops and assignments.
 #include "Time.h"
 
 namespace seneca {
+    Ticket::Ticket()
+    {
+        m_time.reset();
+        m_number = 0;
+    }
+
     Ticket::Ticket(int number)
     {
         m_time.reset();
@@ -37,6 +44,12 @@ namespace seneca {
         return m_number;
     }
 
+    void Ticket::setNumber(int number)
+    {
+        if (m_number > 0)
+            m_number = number;
+    }
+
     void Ticket::resetTime()
     {
         m_time.reset();
@@ -44,15 +57,25 @@ namespace seneca {
 
     std::ostream& Ticket::write(std::ostream& ostr) const
     {
-        // Ticket No: 24, Issued at: 08:00
-        ostr << "Ticket No: " << this->m_number << ", Issued at: " << this->m_time;
+        if (&ostr == &std::cout)
+        {
+            ostr << "Ticket No: " << this->m_number << ", Issued at: " << this->m_time;
+        }
+        else
+        {
+            ostr << m_number << "," << m_time;
+        }
         return ostr;
     }
 
     std::istream& Ticket::read(std::istream& istr)
     {
         char number[3 + 1];
-        char time[5 + 1];
         istr.get(number, 3, ',');
-        istr.get(time, 5);
+        m_number = std::atoi(number);
+
+        this->m_time.read(istr);
+        return istr;
+    }
+
 }

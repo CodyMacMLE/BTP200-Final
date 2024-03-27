@@ -88,7 +88,7 @@ namespace seneca {
 		/// Retrieves the time of the patient's ticket
 		/// </summary>
 		/// <returns>Time object of patient ticket</returns>
-		Time& time() const;
+		Time time() const;
 
 		/// <summary>
 		/// Retrieves number of patient's ticket
@@ -105,7 +105,7 @@ namespace seneca {
 		/// <summary>
 		/// returns the address of the patient name
 		/// </summary>
-		operator const char*();
+		operator const char*() const;
 
 		/// <summary>
 		/// Inserts patient info into seperate ostreams

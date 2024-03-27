@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 /* Citation and Sources...
 Final Project Milestone MS2
 Module: IOAble

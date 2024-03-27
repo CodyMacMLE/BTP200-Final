@@ -29,7 +29,7 @@ namespace seneca {
       /// </summary>
       int m_number;
    public:
-
+      Ticket();
       /// <summary>
       /// Constructs a Ticket by setting the m_number member variable
       /// </summary>
@@ -40,13 +40,19 @@ namespace seneca {
       /// A query that returns the time when the ticket was issued.
       /// </summary>
       /// <returns></returns>
-      Time& time() const;
+      Time time() const;
 
       /// <summary>
       /// A query returning the number of the ticket
       /// </summary>
       /// <returns></returns>
       int number() const;
+
+      /// <summary>
+      /// Sets the number of the ticket
+      /// </summary>
+      /// <param name="number"></param>
+      void setNumber(int number);
 
       /// <summary>
       /// Sets the Ticket time to the current time.
