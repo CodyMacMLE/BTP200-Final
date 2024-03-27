@@ -13,7 +13,7 @@ I have done all the coding by myself and only copied the code
 that my professor provided to complete my workshops and assignments.
 ----------------------------------------------------------- */
 #include <iostream>
-#include <string>
+#include <cstring>
 #include "Ticket.h"
 #include "Time.h"
 
@@ -21,7 +21,10 @@ namespace seneca {
     Ticket::Ticket(int number)
     {
         m_time.reset();
-        m_number = number;
+        if (m_number > 0)
+            m_number = number;
+        else
+            m_number = 0;
     }
 
     Time Ticket::time() const
@@ -48,14 +51,8 @@ namespace seneca {
 
     std::istream& Ticket::read(std::istream& istr)
     {
-        std::string tmpName;
-        std::string tmpOHIP;
-        std::string tmpTicketNo;
-        std::string tmpTime;
-        std::getline(istr, tmpName, ',');
-        std::getline(istr, tmpOHIP, ',');
-        std::getline(istr, tmpTicketNo, ',');
-        std::getline(istr, tmpTime);
-        return istr;
-    }
+        char number[3 + 1];
+        char time[5 + 1];
+        istr.get(number, 3, ',');
+        istr.get(time, 5);
 }

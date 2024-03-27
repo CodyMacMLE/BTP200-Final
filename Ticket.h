@@ -40,7 +40,7 @@ namespace seneca {
       /// A query that returns the time when the ticket was issued.
       /// </summary>
       /// <returns></returns>
-      Time time() const;
+      Time& time() const;
 
       /// <summary>
       /// A query returning the number of the ticket

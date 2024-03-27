@@ -28,7 +28,7 @@ namespace seneca {
 		/// <summary>
 		/// Patient's Ontario Insurance Number
 		/// </summary>
-		int ohipNo;
+		int m_ohipNo;
 
 		/// <summary>
 		/// Ticket details for patient

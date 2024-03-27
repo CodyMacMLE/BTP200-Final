@@ -19,8 +19,11 @@ namespace seneca {
 	/// Constructor
 	/// </summary>
 	/// <param name="TicketNo">Unique ticket number</param>
-	Patient::Patient(int ticketNo) {
-
+	Patient::Patient(int ticketNo) 
+		: Ticket(ticketNo)
+	{
+		m_patientName = nullptr;
+		m_ohipNo = 0;
 	}
 
 	/// <summary>
