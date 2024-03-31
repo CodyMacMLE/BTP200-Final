@@ -51,6 +51,18 @@ namespace seneca {
         /// <param name="s2">Cstring</param>
         /// <returns> &gt;0 if s1 &gt; s2  OR  &lt;0 if s1 &lt; s2 OR 0 if s1 = s2</returns>
         int strcmp(const char* s1, const char* s2)const;
+
+        /// <summary>
+        /// This template is be used to remove a Patient from the lineup when admitted.
+        /// </summary>
+        template <typename type>
+        void removeDynamicElement(type* array[], int index, int& size) {
+            delete array[index];
+            for (int j = index; j < size; j++) {
+                array[j] = array[j + 1];
+            }
+            size--;
+        }
    };
 
    /// <summary>

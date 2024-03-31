@@ -39,9 +39,6 @@
     <ClCompile Include="TriagePatient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main-M4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Time.h">
@@ -68,18 +65,8 @@
     <ClInclude Include="TriagePatient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ms3.csv">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ms3out.csv">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="correct_output MS4.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <ClInclude Include="PreTriage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
