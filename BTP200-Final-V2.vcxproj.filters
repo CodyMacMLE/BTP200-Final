@@ -39,6 +39,12 @@
     <ClCompile Include="TriagePatient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ms51_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PreTriage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Time.h">
@@ -68,5 +74,24 @@
     <ClInclude Include="PreTriage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bigdata.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ClassDiagram.cd">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="smalldata.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="smalldata.csv.bak">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ms51_correct_output.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -32,20 +32,6 @@ namespace seneca {
 		int m_patientCnt;
 
 		/// <summary>
-		/// A PreTriage class is instantiated using the data file name. 
-		/// This data file name is stored in the data filename attribute for load and save purposes. 
-		/// The constructor also initializes the two Time attributes, Contagion test and Triage, to 15 and 5 respectively.
-		/// </summary>
-		PreTriage();
-
-		/// <summary>
-		/// - Saves the data.
-		/// - Iterates through the patient lineup and deletes the elements one by one.
-		///	- If there are any other dynamically allocated memory, it will delete them as well.
-		/// </summary>
-		~PreTriage();
-
-		/// <summary>
 		///  and returns the  as follows:
 		/// </summary>
 		/// <param name="patient">Receives a constant Patient Reference</param>
@@ -92,6 +78,20 @@ namespace seneca {
 		/// </summary>
 		void lineup() const;
 	public:
+		/// <summary>
+		/// A PreTriage class is instantiated using the data file name. 
+		/// This data file name is stored in the data filename attribute for load and save purposes. 
+		/// The constructor also initializes the two Time attributes, Contagion test and Triage, to 15 and 5 respectively.
+		/// </summary>
+		PreTriage(const char* filename = nullptr);
+
+		/// <summary>
+		/// - Saves the data.
+		/// - Iterates through the patient lineup and deletes the elements one by one.
+		///	- If there are any other dynamically allocated memory, it will delete them as well.
+		/// </summary>
+		~PreTriage();
+
 		/// <summary>
 		/// Runs the PreTriage main application
 		/// </summary>

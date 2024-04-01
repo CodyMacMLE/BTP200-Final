@@ -121,7 +121,9 @@
   <ItemGroup>
     <ClCompile Include="IOAble.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="ms51_test.cpp" />
     <ClCompile Include="Patient.cpp" />
+    <ClCompile Include="PreTriage.cpp" />
     <ClCompile Include="TestPatient.cpp" />
     <ClCompile Include="Ticket.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -138,6 +140,15 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="TriagePatient.h" />
     <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bigdata.csv" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="smalldata.csv" />
+    <None Include="smalldata.csv.bak" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ms51_correct_output.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
