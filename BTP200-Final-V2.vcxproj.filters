@@ -39,10 +39,10 @@
     <ClCompile Include="TriagePatient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ms51_test.cpp">
+    <ClCompile Include="PreTriage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PreTriage.cpp">
+    <ClCompile Include="ms55_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,9 +79,6 @@
     <None Include="bigdata.csv">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ClassDiagram.cd">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="smalldata.csv">
       <Filter>Resource Files</Filter>
     </None>
@@ -90,7 +87,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ms51_correct_output.txt">
+    <Text Include="ms55_correct_output.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

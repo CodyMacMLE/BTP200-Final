@@ -36,7 +36,7 @@ namespace seneca {
 		/// </summary>
 		/// <param name="patient">Receives a constant Patient Reference</param>
 		/// <returns>Total estimated wait time for that type of Patient (contagion or Triage)</returns>
-		Time& getWaitTime(const Patient& patient) const;
+		Time getWaitTime(const Patient& patient) const;
 
 		/// <summary>
 		/// Adjusts the average wait time of that type of patient based on the admittance time of the patient.

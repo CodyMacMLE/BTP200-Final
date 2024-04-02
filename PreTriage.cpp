@@ -3,6 +3,7 @@
 #include <fstream>
 #include <limits>
 #include "PreTriage.h"
+#include "Utils.h"
 #include "Time.h"
 #include "Menu.h"
 #include "Patient.h"
@@ -43,28 +44,46 @@ namespace seneca {
 		delete[] m_dataFile;
 	}
 
-	Time& PreTriage::getWaitTime(const Patient& patient) const
+	Time PreTriage::getWaitTime(const Patient& patient) const
 	{
-		return patient.time();
+		Time estWaitTime;
+		int patientsOfType = 0;
+		for (int i = 0; i < m_patientCnt; ++i)
+		{
+			if (patient.type() == m_patients[i]->type())
+				++patientsOfType;
+		}
+
+		estWaitTime *= patientsOfType;
+		return estWaitTime;
 	}
 
-	/// <summary>
-	/// Adjusts the average wait time of that type of patient based on the admittance time of the patient.
-	/// </summary>
-	/// <param name="patient">Reference of the admitting patient</param>
 	void PreTriage::setAverageWaitTime(Patient& patient)
 	{
-
+		Time CT = U.getTime();
+		Time PT = patient.time();
+		int PTN = patient.number();
+		if (patient.type() == 'C')
+		{
+			m_avgWaitTestPatient = ((CT - PT) + (m_avgWaitTestPatient * (PTN - 1))) / PTN;
+		}
+		else if (patient.type() == 'T')
+		{
+			m_avgWaitTriagePatient = ((CT - PT) + (m_avgWaitTriagePatient * (PTN - 1))) / PTN;
+		}
 	}
 
-	/// <summary>
-	/// Finds the index of the first patient in line that matches a specified type.
-	/// </summary>
-	/// <param name="patientType">Receives a character representing the type of patient (C for Contaigen, T for Triage)</param>
-	/// <returns>Index of the first patient in line for that type</returns>
 	int PreTriage::indexOfFirstInLine(char patientType) const
 	{
-		return 0;
+		int patientIndex = -1;
+		for (int i = 0; i < m_patientCnt; ++i)
+		{
+			if (m_patients[i]->type() == patientType) {
+				patientIndex = i;
+				break;
+			}
+		}
+		return patientIndex;
 	}
 
 	void PreTriage::load(const char* filename)
@@ -81,23 +100,24 @@ namespace seneca {
 			m_avgWaitTriagePatient.read(file);
 			file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+
 			// Adding Patients to m_patients
 			Patient* tmpPatient = nullptr;
 			for (int i = 0; i < MAX_NUM_PATIENTS && file; ++i)
 			{
-				char type = file.get();
+				char category = file.get();
 				file.ignore(std::numeric_limits<std::streamsize>::max(), ',');
-				if (type == 'C')
-				{
+				if (category == 'C')
 					tmpPatient = new TestPatient();
-				}
-				else if (type == 'T')
-				{
+				else if (category == 'T')
 					tmpPatient = new TriagePatient();
-				}
 				if (tmpPatient != nullptr)
 				{
 					tmpPatient->read(file);
+					if (file.peek() == EOF)
+						file.setstate(EOF);
+					else if (file.peek() == '\n')
+						file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					m_patients[i] = tmpPatient;
 					++m_patientCnt;
 				}
@@ -150,33 +170,184 @@ namespace seneca {
 		file.close();
 	}
 
-	/// <summary>
-	/// Calls a sub-menu object to create/insert a patient (Triage or Contagion)
-	/// </summary>
 	void PreTriage::registerPatient()
 	{
+		Menu registerMenu = Menu("Select Type of Registration:\n1- Contagion Test\n2- Triage", 1);
+		int registerSelection;
 
+		if (m_patientCnt == MAX_NUM_PATIENTS)
+		{
+			std::cout << "Line up full!\n";
+		}
+		else
+		{
+			registerMenu.display();
+			std::cin >> registerSelection;
+
+			int index = m_patientCnt;
+			switch (registerSelection)
+			{
+			case 0: // Exit
+				break;;
+				m_patients[index] = new TestPatient();
+				std::cout << "Please enter patient information:\n";
+				std::cin >> *m_patients[index];
+				std::cout
+					<< "\n******************************************\n"
+					<< *m_patients[index]
+					<< "Estimated Wait Time: " << getWaitTime(*m_patients[index])
+					<< "\n******************************************\n\n";
+				m_patientCnt++;
+				break;
+			case 2: // Triage
+				m_patients[index] = new TriagePatient();
+				std::cout << "Please enter patient information:\n";
+				std::cin >> *m_patients[index];
+				std::cout
+					<< "\n******************************************\n"
+					<< *m_patients[index]
+					<< "Estimated Wait Time: " << getWaitTime(*m_patients[index])
+					<< "\n******************************************\n\n";
+				m_patientCnt++;
+				break;
+			default: // Wrong input
+				break;
+			}
+		}
 	}
 
-	/// <summary>
-	/// Calls a sub-menu to call the next patient in line to be admitted
-	/// </summary>
 	void PreTriage::admit()
 	{
+		Menu admitMenu = Menu("Select Type of Admittance:\n1- Contagion Test\n2- Triage", 1);
+		int admitSelection;
 
+		admitMenu.display();
+		std::cin >> admitSelection;
+
+		int index;
+		Time currentTime;
+		switch (admitSelection)
+		{
+		case 0: // Exit
+			break;
+		case 1: // Contagion Test
+			index = indexOfFirstInLine('C');
+			if (index == -1)
+			{
+				std::cout << "Lineup is empty!\n";
+			}
+			else if (index >= 0 && index < m_patientCnt)
+			{
+				currentTime.reset();
+				std::cout << std::endl 
+					<< "******************************************\n" 
+					<< "Call time: [" << currentTime << "]\n"
+					<< "Calling at for "
+					<< *m_patients[index]
+					<< "******************************************\n\n";
+				setAverageWaitTime(*m_patients[index]);
+				U.removeDynamicElement(m_patients, index, m_patientCnt);
+			}
+			break;
+		case 2: // Triage
+			index = indexOfFirstInLine('T');
+			if (index == -1)
+			{
+				std::cout << "Lineup is empty!\n";
+			}
+			else if (index >= 0 && index < m_patientCnt)
+			{
+				currentTime.reset();
+				std::cout << std::endl
+					<< "******************************************\n"
+					<< "Call time: [" << currentTime << "]\n"
+					<< "Calling at for "
+					<< *m_patients[index]
+					<< "******************************************\n\n";
+				setAverageWaitTime(*m_patients[index]);
+				U.removeDynamicElement(m_patients, index, m_patientCnt);
+			}
+			break;
+		default: // Wrong input
+			break;
+		}
 	}
 
-	/// <summary>
-	/// Prints a report on patients currently in the lineup
-	/// </summary>
 	void PreTriage::lineup() const
 	{
+		Menu lineupMenu = Menu("Select The Lineup:\n1- Contagion Test\n2- Triage", 1);
+		int lineupSelection;
 
+		lineupMenu.display();
+		std::cin >> lineupSelection;
+
+
+		switch (lineupSelection)
+		{
+		case 0: // Exits
+			break;
+		case 1: // Contagion Test
+			std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n";
+			std::cout << "-------------------------------------------------------------------------------\n";
+			{
+				int rowCnt = 1; // counter for rows
+				bool patientExists = false;
+				for (int j = 0; j < m_patientCnt; ++j)
+				{
+					if (m_patients[j]->type() == 'C')
+					{
+						std::clog << rowCnt << "   - ";
+						m_patients[j]->write(std::clog);
+						std::clog << "\n";
+						patientExists = true;
+						++rowCnt;
+					}
+				}
+				
+				if (patientExists)
+				{
+					std::clog.flush();
+				}
+				else
+				{
+					std::clog << "Line up is empty!\n" << std::endl;
+				}
+			}
+			std::cout << "-------------------------------------------------------------------------------" << std::endl;
+			break;
+		case 2: // Triage
+			std::cout << "Row - Patient name                                          OHIP     Tk #  Time\n";
+			std::cout << "-------------------------------------------------------------------------------\n";
+			{
+				int rowCnt = 1; // counter for rows
+				bool patientExists = false;
+				for (int j = 0; j < MAX_NUM_PATIENTS; ++j)
+				{
+					if (m_patients[j]->type() == 'T')
+					{
+						std::clog << rowCnt << "   - ";
+						m_patients[j]->write(std::clog);
+						std::clog << "\n";
+						patientExists = true;
+						++rowCnt;
+					}
+				}
+				if (patientExists)
+				{
+					std::clog.flush();
+				}
+				else
+				{
+					std::clog << "Line up is empty!\n" << std::endl;
+				}
+			}
+			std::cout << "-------------------------------------------------------------------------------" << std::endl;
+			break;
+		default: // Exits
+			break;
+		}
 	}
 
-	/// <summary>
-	/// Runs the PreTriage main application
-	/// </summary>
 	void PreTriage::run()
 	{
 		Menu preTriageApp = Menu("General Healthcare Facility Pre-Triage Application\n1- Register\n2- Admit\n3- View Lineup");

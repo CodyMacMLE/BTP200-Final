@@ -1,13 +1,1 @@
-﻿  IOAble.cpp
-  Menu.cpp
-  Patient.cpp
-  PreTriage.cpp
-  TestPatient.cpp
-  Ticket.cpp
-  Time.cpp
-  TriagePatient.cpp
-  Utils.cpp
-  ms51_test.cpp
-  Generating Code...
-\\mac\Home\Documents\GitHub\BTP200-Final\PreTriage.cpp(48,1): warning C4172: returning address of local variable or temporary
-  BTP200-Final-V2.vcxproj -> \\Mac\Home\Documents\GitHub\BTP200-Final\x64\Debug\BTP200-Final-V2.exe
+﻿  BTP200-Final-V2.vcxproj -> C:\Users\codym\OneDrive\Documents\GitHub\BTP200-Final\x64\Debug\BTP200-Final-V2.exe
