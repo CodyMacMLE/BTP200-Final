@@ -82,23 +82,23 @@ namespace seneca {
 			file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 			// Adding Patients to m_patients
-			Patient* tmpPatients[MAX_NUM_PATIENTS];
+			Patient* tmpPatient = nullptr;
 			for (int i = 0; i < MAX_NUM_PATIENTS && file; ++i)
 			{
-				tmpPatients[i] = nullptr;
-
-				if (file.get() == 'C')
+				char type = file.get();
+				file.ignore(std::numeric_limits<std::streamsize>::max(), ',');
+				if (type == 'C')
 				{
-					tmpPatients[i] = new TestPatient();
+					tmpPatient = new TestPatient();
 				}
-				else if (file.get() == 'T')
+				else if (type == 'T')
 				{
-					tmpPatients[i] = new TriagePatient();
+					tmpPatient = new TriagePatient();
 				}
-				if (tmpPatients[i] != nullptr)
+				if (tmpPatient != nullptr)
 				{
-					tmpPatients[i]->read(file);
-					m_patients[i] = tmpPatients[i];
+					tmpPatient->read(file);
+					m_patients[i] = tmpPatient;
 					++m_patientCnt;
 				}
 			}
