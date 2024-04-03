@@ -42,7 +42,7 @@
     <ClCompile Include="PreTriage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ms55_test.cpp">
+    <ClCompile Include="ms51_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,19 +76,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bigdata.csv">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="smalldata.csv">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="smalldata.csv.bak">
+    <None Include="bigdata.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ms55_correct_output.txt">
-      <Filter>Resource Files</Filter>
+    <Text Include="reflect.txt">
+      <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

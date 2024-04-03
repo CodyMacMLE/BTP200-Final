@@ -59,9 +59,9 @@ namespace seneca {
     std::istream& Ticket::read(std::istream& istr)
     {
         char number[3 + 1];
-        istr.get(number, 3, ',');
-        m_number = std::atoi(number);
+        istr.get(number, 4, ',');
         istr.ignore(10000000, ',');
+        m_number = std::atoi(number);
         this->m_time.read(istr);
         return istr;
     }

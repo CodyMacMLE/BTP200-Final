@@ -196,12 +196,12 @@ namespace seneca {
 			// Name
 			char name[50 + 1];
 			istr.get(name, 51, ',');
+			istr.ignore(10000000, ',');
 			delete[] m_patientName;
 			m_patientName = new char[strlen(name) + 1];
 			strcpy(m_patientName, name);
 
 			// OHIP
-			istr.ignore(10000000, ',');
 			istr >> m_ohipNo;
 			istr.ignore(10000000, ',');
 			// Ticket

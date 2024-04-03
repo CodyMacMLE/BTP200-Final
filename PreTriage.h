@@ -1,5 +1,19 @@
 #ifndef SENECA_PRETRIAGE_H
 #define SENECA_PRETRIAGE_H
+/* Citation and Sources...
+Final Project Milestone MS5
+Module: PreTriage
+Filename: PreTriage.h
+Version 1.0
+Author   Cody MacDonald
+Revision History
+-----------------------------------------------------------
+Date      Reason
+2024/04/03  Preliminary release
+-----------------------------------------------------------
+1.	Clearing buffer using max stream buffer size template + limits module (cin.clear & .ignore)
+	https://gist.github.com/leimao/418395bf920eb70b2b11fe89d7c1f738
+----------------------------------------------------------- */
 #include "Time.h"
 #include "Patient.h"
 namespace seneca {

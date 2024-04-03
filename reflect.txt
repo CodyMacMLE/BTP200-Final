@@ -1,0 +1,32 @@
++--------------------------------------------------------------------------------------------------------------+
+| Learnings: What new concepts or skills did you acquire during this project?							       |
+| How did your understanding of C evolve into C++, especially in terms of object orientation?                  |
++--------------------------------------------------------------------------------------------------------------+
+
+ This project helped me understand oop hierarchy, along with using virtual functions to call the appropriate
+ member function based on its derived object type. 
+
+ Another concept I enjoyed / learned is the ease of creating a menu once as an object, and just needed to 
+ create an object of that type. It saves a lot of time and code redundancy.
+
+ It would have been nice to work a little more with templates, however, it is late into the semester and the
+ concept is new. On top of that, I believe you mentioned that it is something we look more into in our next 
+ programming course.
+
++--------------------------------------------------------------------------------------------------------------+
+| Challenges: What were the most significant challenges you encountered while developing the application?      |
+| How did you overcome these challenges, and what strategies did you employ?                                   |
+| Feel free to share any insights, lessons learned, or personal growth you experienced throughout the project. | 
+| Your reflections will provide valuable feedback and contribute to your overall learning journey.             |
++--------------------------------------------------------------------------------------------------------------+
+ One of the challenges of this application was remembering what each member function does across each module.
+ Since it was a project that persisted over the past few weeks I needed to go back to each module understand 
+ what member function I needed to call. Thankfully, you hinted earlier in the semester that documenting each
+ member/member function with /// <summary>... is important. Since I made sure I documented each member function
+ before I created it, I knew exactly what each one did. If I didn't I am sure I would have had a lot more
+ difficulty. 
+
+ The only other difficulty I would say I mainly had was clearing the input buffer. In C, after every input
+ we were told to insert while(getchar() != '\n); which would call getchar() and clear the character until 
+ '\n' was found thus flushing everything. C++ input buffer seems a bit more complicated to understand. Going
+ over that a bit more or earlier would have been nice.

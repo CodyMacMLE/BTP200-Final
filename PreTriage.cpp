@@ -1,7 +1,24 @@
+/* Citation and Sources...
+Final Project Milestone MS5
+Module: PreTriage
+Filename: PreTriage.cpp
+Version 1.0
+Author   Cody MacDonald
+Revision History
+-----------------------------------------------------------
+Date      Reason
+2024/04/03  Preliminary release
+-----------------------------------------------------------
+1.	Clearing buffer using max stream buffer size template + limits module (cin.clear & .ignore)
+	https://gist.github.com/leimao/418395bf920eb70b2b11fe89d7c1f738
+----------------------------------------------------------- */
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <iomanip>
+#include <cstring>
+#include <memory>
 #include "PreTriage.h"
 #include "Utils.h"
 #include "Time.h"
@@ -46,7 +63,7 @@ namespace seneca {
 
 	Time PreTriage::getWaitTime(const Patient& patient) const
 	{
-		Time estWaitTime;
+		Time waitTime;
 		int patientsOfType = 0;
 		for (int i = 0; i < m_patientCnt; ++i)
 		{
@@ -54,8 +71,12 @@ namespace seneca {
 				++patientsOfType;
 		}
 
-		estWaitTime *= patientsOfType;
-		return estWaitTime;
+		if (patient.type() == 'C')
+			waitTime = m_avgWaitTestPatient * patientsOfType;
+		else if (patient.type() == 'T')
+			waitTime = m_avgWaitTriagePatient * patientsOfType;
+
+		return waitTime;
 	}
 
 	void PreTriage::setAverageWaitTime(Patient& patient)
@@ -102,29 +123,39 @@ namespace seneca {
 
 
 			// Adding Patients to m_patients
-			Patient* tmpPatient = nullptr;
+			Patient* tmpPatient = nullptr;													// Cause of memory leak?
 			for (int i = 0; i < MAX_NUM_PATIENTS && file; ++i)
 			{
 				char category = file.get();
 				file.ignore(std::numeric_limits<std::streamsize>::max(), ',');
+
 				if (category == 'C')
-					tmpPatient = new TestPatient();
+				{
+					//TestPatient* tmpPatient = dynamic_cast<TestPatient*>(tmpPatient);
+					tmpPatient = new TestPatient();											// Cause of memory leak?
+				}
 				else if (category == 'T')
-					tmpPatient = new TriagePatient();
+				{
+					//TriagePatient* tmpPatient = dynamic_cast<TriagePatient*>(tmpPatient);
+					tmpPatient = new TriagePatient();										// Cause of memory leak?
+				}
+
 				if (tmpPatient != nullptr)
 				{
 					tmpPatient->read(file);
-					if (file.peek() == EOF)
-						file.setstate(EOF);
-					else if (file.peek() == '\n')
-						file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 					m_patients[i] = tmpPatient;
 					++m_patientCnt;
 				}
+
+				if (file.peek() == EOF)
+					file.get();	
+				
 			}
 
 			// Displaying # loaded
-			if (!EOF)
+			if (!file.eof())
 			{
 				std::cout << "Warning: number of records exceeded 100\n";
 			}
@@ -183,15 +214,21 @@ namespace seneca {
 		{
 			registerMenu.display();
 			std::cin >> registerSelection;
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+			Patient* tmpPatient = nullptr;
 			int index = m_patientCnt;
 			switch (registerSelection)
 			{
 			case 0: // Exit
-				break;;
-				m_patients[index] = new TestPatient();
+				break;
+			case 1:
+				 tmpPatient = new TestPatient();
+				
 				std::cout << "Please enter patient information:\n";
-				std::cin >> *m_patients[index];
+				std::cin >> *tmpPatient;
+				tmpPatient->setArrivalTime();
+				m_patients[index] = tmpPatient;
 				std::cout
 					<< "\n******************************************\n"
 					<< *m_patients[index]
@@ -200,9 +237,11 @@ namespace seneca {
 				m_patientCnt++;
 				break;
 			case 2: // Triage
-				m_patients[index] = new TriagePatient();
+				tmpPatient = new TriagePatient();
 				std::cout << "Please enter patient information:\n";
-				std::cin >> *m_patients[index];
+				std::cin >> *tmpPatient;
+				tmpPatient->setArrivalTime();
+				m_patients[index] = tmpPatient;
 				std::cout
 					<< "\n******************************************\n"
 					<< *m_patients[index]
@@ -296,9 +335,12 @@ namespace seneca {
 				{
 					if (m_patients[j]->type() == 'C')
 					{
-						std::clog << rowCnt << "   - ";
+						std::clog.width(3);
+						std::clog.setf(std::ios::left);
+						std::clog << rowCnt << " - ";
 						m_patients[j]->write(std::clog);
 						std::clog << "\n";
+						std::clog.unsetf(std::ios::left);
 						patientExists = true;
 						++rowCnt;
 					}
@@ -321,13 +363,16 @@ namespace seneca {
 			{
 				int rowCnt = 1; // counter for rows
 				bool patientExists = false;
-				for (int j = 0; j < MAX_NUM_PATIENTS; ++j)
+				for (int j = 0; j < m_patientCnt; ++j)
 				{
 					if (m_patients[j]->type() == 'T')
 					{
-						std::clog << rowCnt << "   - ";
+						std::clog.width(3);
+						std::clog.setf(std::ios::left);
+						std::clog << rowCnt << " - ";
 						m_patients[j]->write(std::clog);
 						std::clog << "\n";
+						std::clog.unsetf(std::ios::left);
 						patientExists = true;
 						++rowCnt;
 					}

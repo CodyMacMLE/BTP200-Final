@@ -54,12 +54,11 @@ namespace seneca
 
 	std::istream& Time::read(std::istream& in)
 	{
-		char colon;
 		int hours, minutes;
 		in >> hours;
 		if (in.peek() != ':')
 			in.setstate(in.failbit);
-		in >> colon;
+		in.ignore(100000, ':');
 		in >> minutes;
 		if (in.good())
 			this->m_minutes = minutes + (hours * 60);
