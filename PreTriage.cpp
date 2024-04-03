@@ -56,7 +56,7 @@ namespace seneca {
 		save(m_dataFile);
 		for (int i = 0; i < m_patientCnt; ++i)
 		{
-			delete[] m_patients[i];
+			delete m_patients[i];
 		}
 		delete[] m_dataFile;
 	}
@@ -225,7 +225,7 @@ namespace seneca {
 			case 1:
 				 tmpPatient = new TestPatient();
 				
-				std::cout << "Please enter patient information:\n";
+				std::cout << "Please enter patient information: \n";
 				std::cin >> *tmpPatient;
 				tmpPatient->setArrivalTime();
 				m_patients[index] = tmpPatient;
@@ -238,7 +238,7 @@ namespace seneca {
 				break;
 			case 2: // Triage
 				tmpPatient = new TriagePatient();
-				std::cout << "Please enter patient information:\n";
+				std::cout << "Please enter patient information: \n";
 				std::cin >> *tmpPatient;
 				tmpPatient->setArrivalTime();
 				m_patients[index] = tmpPatient;
